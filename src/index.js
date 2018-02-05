@@ -5,8 +5,11 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import store from './store';
 import createRouter from './routes';
-import './mock';
 import './assets/css/common.css';
+
+if (process.env.NODE_ENV !== 'production') {
+  require('./mock');
+}
 
 class App extends Component {
   static propTypes = {};

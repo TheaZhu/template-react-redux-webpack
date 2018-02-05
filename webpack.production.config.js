@@ -1,10 +1,9 @@
-/**
- * @author zhuyaqin thea.zhu@foxmail.com
- */
 
 const path = require('path'); // 为了得到项目根路径
 const webpack = require('webpack'); // webpack核心
+const prefixer = require('autoprefixer');  // 自动添加css前缀
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const babelQuery = require('./babelConfig');
 
 const APP_PATH = path.resolve(__dirname, 'src');
@@ -13,8 +12,8 @@ const BUILD_PATH = path.resolve(__dirname, 'dist');
 
 module.exports = {
   entry: {
-    app: APP_FILE,
-    common: ['babel-polyfill']
+    vendor: ['babel-polyfill'],
+    app: APP_FILE
   },
   output: {
     path: BUILD_PATH,
@@ -22,7 +21,7 @@ module.exports = {
     filename: 'bundle.js',
     chunkFilename: '[name].chunk.js'
   },
-  // devtool: 'source-map',  // 与UglifyJsPlugin冲突
+  devtool: false, // 'source-map',  // 与UglifyJsPlugin冲突
   module: {
     loaders: [{
       test: /\.(js|jsx)$/,
@@ -61,16 +60,6 @@ module.exports = {
         ]
       }
     }),
-    new CopyWebpackPlugin([{
-      from: './src/assets/images/dynamic',
-      to: './assets/images/dynamic'
-    }]),
-    new webpack.optimize.CommonsChunkPlugin({
-      minChunks: 2,
-      async: true,
-      name: 'vendor',
-      filename: 'vendor.min.js'
-    }), // 将依赖提取到一个js
     new webpack.optimize.UglifyJsPlugin({
       output: {
         comments: false
@@ -85,6 +74,22 @@ module.exports = {
         if_return: true,
         join_vars: true,
         drop_console: true
+      }
+    }),
+    new CopyWebpackPlugin([{
+      from: './src/assets/images',
+      to: './assets/images'
+    }]),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      filename: 'vendor.min.js'
+    }),// 将依赖提取到一个js
+    new HtmlWebpackPlugin({
+      template: 'index.html',
+      chunks: ['vendor', 'app'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
       }
     })
     // new webpack.optimize.OccurenceOrderPlugin()  // 配置给最常用的id分配最简短的id, webpack 1.x 需要
