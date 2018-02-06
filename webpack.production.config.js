@@ -77,8 +77,8 @@ module.exports = {
       }
     }),
     new CopyWebpackPlugin([{
-      from: './src/assets/images',
-      to: './assets/images'
+      from: './src/assets/images/dynamic',
+      to: './assets/images/dynamic'
     }]),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
