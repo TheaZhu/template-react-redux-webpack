@@ -86,11 +86,11 @@ module.exports = {
     }),// 将依赖提取到一个js
     new HtmlWebpackPlugin({
       template: 'index.html',
-      chunks: ['vendor', 'app'],
       minify: {
         removeComments: true,
         collapseWhitespace: true
-      }
+      },
+      chunksSortMode: 'dependency'
     })
     // new webpack.optimize.OccurenceOrderPlugin()  // 配置给最常用的id分配最简短的id, webpack 1.x 需要
   ],
