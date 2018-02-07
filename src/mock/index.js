@@ -1,6 +1,5 @@
 const MOCK_URL = `${window.location.protocol}//mock.com`;
 
-
 const context = require.context('./', false, /\.js$/);
 const keys = context.keys()
   .filter(item => (item !== './index.js'));
